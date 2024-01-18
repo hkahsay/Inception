@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  nginx:
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    volumes:
+      - ./data/wordpress:/var/www/html/wordpress
+    ports:
+      - "443:443"
+    networks:
+      - front
+    restart: always
+  wordpress:
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+volumes:
+  wordpress:
+networks:
+  front:
