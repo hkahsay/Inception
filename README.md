@@ -40,7 +40,17 @@
 * **docker rmi my_image:latest** (Meaning: Removes a Docker image.)
 * **docker network ls** (Meaning: Lists all Docker networks.)
 * **docker-compose down -v** (Meaning: to down the container and remove all volume)
+* **docker-compose down** (Meaning: Stop and remove the containers)
+* **docker compose build --no-cache** 
 
 
+## necessary links
+
+* [nginx.conf](https://www.nginx.com/resources/wiki/start/topics/examples/full/)
+* [wp.conf](https://gist.github.com/lidaobing/673798)
+* [wp-config-docker.php](https://github.com/WordPress/WordPress/blob/master/wp-config-sample.php)
+* [wp Dockerfile](https://www.datanovia.com/en/lessons/wordpress-docker-setup-files-example-for-local-development/)
+* [wp docker-compose](https://github.com/docker/awesome-compose/tree/master/official-documentation-samples/wordpress/)
+* [.env](https://www.datanovia.com/en/lessons/wordpress-docker-setup-files-example-for-local-development/)
 
 
