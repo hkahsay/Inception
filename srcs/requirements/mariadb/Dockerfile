@@ -20,4 +20,4 @@ COPY ./tools/script.sh /script.sh
 RUN chmod 755 /script.sh
 
 # Set the entry point
-ENTRYPOINT ["sh", "/script.sh"]
+CMD ["sh", "/script.sh"]
