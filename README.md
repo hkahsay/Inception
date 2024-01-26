@@ -41,7 +41,8 @@
 * **docker network ls** (Meaning: Lists all Docker networks.)
 * **docker-compose down -v** (Meaning: to down the container and remove all volume)
 * **docker-compose down** (Meaning: Stop and remove the containers)
-* **docker compose build --no-cache** 
+* **docker compose build --no-cache**
+* **ps aux | grep mysqld** (meaning check if the MariaDB process is running)
 
 
 ## necessary links

@@ -3,7 +3,7 @@
 all: build deploy
 
 build:
-	docker-compose build
+	docker compose -f srcs/docker-compose.yml build 
 
 deploy:
-	docker-compose-c up -d
+	docker compose srcs/docker-compose.yml up -d

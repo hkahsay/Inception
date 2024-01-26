@@ -14,6 +14,8 @@ services:
       - ./data/wordpress:/var/www/html/wordpress
     networks:
       - front
+    env_file:
+      - .env
     restart: always
   wordpress:
     build:
@@ -28,8 +30,8 @@ services:
     - ./data/wordpress:/var/www/wordpress
     networks:
       - front
-    # env_file:
-    #   - .env
+    env_file:
+      - .env
     restart: always
   mariadb:
     container_name: mariadb
@@ -40,6 +42,8 @@ services:
       - ./data/mariadb:/var/lib/mysql
     networks:
       - front
+    env_file:
+      - .env
     restart: always
 volumes:
   wordpress:

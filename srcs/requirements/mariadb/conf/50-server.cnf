@@ -15,8 +15,8 @@
 # * Basic Settings
 #
 user		= mysql
-pid-file	= /var/run/mysqld/mysqld.pid
-socket		= /var/run/mysqld/mysqld.sock
+pid-file	= /run/mysqld/mysqld.pid
+socket		= /run/mysqld/mysqld.sock
 port		= 3306
 basedir		= /usr
 datadir		= /var/lib/mysql
@@ -26,7 +26,7 @@ lc-messages-dir	= /usr/share/mysql
 
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
-bind-address		= 0.0.0.0
+bind-address		=*
 
 #
 # * Fine Tuning
@@ -133,3 +133,49 @@ collation-server      = utf8mb4_general_ci
 # use this group for options that older servers don't understand
 [mariadb-10.3]
 
+
+
+#!bin/bash
+
+#   script.sh WORDPRESS olmartin 26.06.23  V26.13
+
+set -x
+
+sleep 10
+
+if [ ! -f "/wordpress/wp-activate.php" ]; then
+    rm -rf /var/www/wordpress/*
+
+    wp core download \
+    --locale="en_US" \
+    --allow-root
+
+    wp core config \
+    --dbname=$MYSQL_DATABASE \
+    --dbuser=$MYSQL_USER \
+    --dbpass=$MYSQL_PASSWORD \
+    --dbhost=$WP_DB_HOST:3306 \
+    --path='/var/www/wordpress' \
+    --extra-php \
+    --allow-root
+
+    chmod 777 wp-config.php
+
+
+    wp core install \
+    --url=$DOMAIN_NAME \
+    --title=$WP_SITE_TITLE \
+    --admin_user=$WP_ADMIN_USER \
+    --admin_password=$WP_ADMIN_PASSWORD \
+    --admin_email=$WP_ADMIN_EMAIL\
+     --allow-root \
+     --path='/var/www/wordpress'
+
+    wp user create \
+    --allow-root \
+    --role=author $WP_USER $WP_USER_EMAIL \
+    --user_pass=$WP_USER_PWD \
+    --path='/var/www/wordpress' >> /log.txt
+else
+    printf "WordPress installed\n"
+fi
