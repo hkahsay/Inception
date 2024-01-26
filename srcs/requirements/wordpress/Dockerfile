@@ -3,22 +3,22 @@ FROM debian:bullseye
 RUN apt update -y && apt upgrade -y
 RUN apt-get -y install wget
 
-RUN apt-get install -y \
-php7.3 \
-php7.3-fpm \
-php7.3-mysql \
-php7.3-phar \
-php7.3-json \
-php7.3-xml \
-php7.3-mbstring \
-php7.3-curl \
-php7.3-gd \
-php7.3-intl \
-php7.3-zip \
+# Using 7.4 because it seems to be the latest one supported by debian bullseye.
+# Suboptimal: 7.4 is already EOL (End Of Life): https://www.php.net/supported-versions.php.
+RUN apt-get install -y php7.4
+RUN apt-get install -y php7.4-fpm \
+php7.4-mysql \
+php7.4-phar \
+php7.4-json \
+php7.4-xml \
+php7.4-mbstring \
+php7.4-curl \
+php7.4-gd \
+php7.4-intl \
+php7.4-zip \
 mariadb-client
 
-COPY ./conf/php.conf /etc/php/7.3/fpm/pool.d/www.conf
-RUN useradd http
+COPY ./conf/wp.conf /etc/php/7.3/fpm/pool.d/www.conf
 
 # RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
 # RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
@@ -29,11 +29,22 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
-COPY conf/script.sh /script.sh
-RUN chmod +x /script.sh
+COPY scripts/docker-entrypoint-new.sh /scripts/entrypoints.sh
+RUN chmod +x /scripts/entrypoints.sh
 
 WORKDIR /var/www/wordpress
 
-ENTRYPOINT [ "sh", "/scripts/docker-entrypoint.sh" ]
+# See https://www.digitalocean.com/community/tutorials/php-fpm-nginx
 
-CMD ["wp", "shell"]
+# Create a group and user for WordPress
+RUN groupadd wordpress_user \
+    && useradd -g wordpress_user wordpress_user
+
+# Create a directory for PHP-FPM socket
+RUN mkdir /run/php \
+    && chmod 755 /run/php \
+    && chown wordpress_user:wordpress_user /run/php
+
+ENTRYPOINT [ "sh" ]
+
+CMD ["/scripts/entrypoints.sh"]

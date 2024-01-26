@@ -24,20 +24,20 @@ services:
       - mariadb
     ports:
       - "9000:9000"
-    # volumes:
-    #   - ./data/wordpress:/var/www/html/wordpress
+    volumes:
+    - ./data/wordpress:/var/www/wordpress
     networks:
       - front
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     restart: always
   mariadb:
     container_name: mariadb
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    # volumes:
-    #   - ./data/mariadb:/var/lib/mysql
+    volumes:
+      - ./data/mariadb:/var/lib/mysql
     networks:
       - front
     restart: always
