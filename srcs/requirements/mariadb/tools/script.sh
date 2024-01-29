@@ -15,23 +15,28 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
         sleep 1
     done
 
-    mysql -u root --password=$DB_ROOT_PASSWORD <<- EOF
-        SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${DB_ROOT_PASSWORD}');
-        GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;
-        DELETE FROM mysql.user WHERE user != 'root' AND user != 'mariadb.sys' OR (user = 'root' AND host != 'localhost');
-        CREATE DATABASE IF NOT EXISTS ${DB_DATABASE};
-        CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-        GRANT ALL PRIVILEGES ON ${DB_DATABASE}.* TO ${DB_USER}@'%';
-        FLUSH PRIVILEGES;
+    # Check if the database already exists
+    DB_EXISTS=$(mysql -u root --password="$DB_ROOT_PASSWORD" -e "SHOW DATABASES LIKE '${DB_NAME}';" | grep "${DB_NAME}")
+
+    if [ -z "$DB_EXISTS" ]; then
+        # If the database does not exist, create it
+        mysql -u root --password="$DB_ROOT_PASSWORD" <<- EOF
+            SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${DB_ROOT_PASSWORD}');
+            GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;
+            DELETE FROM mysql.user WHERE user != 'root' AND user != 'mariadb.sys' OR (user = 'root' AND host != 'localhost');
+            CREATE DATABASE ${DB_NAME};
+            CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+            GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
+            FLUSH PRIVILEGES;
 EOF
+    else
+        echo "Database '${DB_NAME}' already exists."
+    fi
 
     mysqladmin -u root --password=$DB_ROOT_PASSWORD shutdown
 
 fi
 
+
 # Start MariaDB using mysqld_safe in the background
-mysqld_safe --datadir=/var/lib/mysql --user=mysql & wait
-
-
-# Alternatively, you can use mysqld directly (but mysqld_safe is usually preferred)
-# mysqld --datadir=/var/lib/mysql --user=mysql &
+exec mysqld --datadir=/var/lib/mysql --user=mysql

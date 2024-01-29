@@ -27,7 +27,8 @@ services:
     ports:
       - "9000:9000"
     volumes:
-    - ./data/wordpress:/var/www/wordpress
+    - ./data/wordpress:/var/www/html/wordpress
+      # - wordpress:/var/www/html/wordpress
     networks:
       - front
     env_file:
@@ -39,14 +40,30 @@ services:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
     volumes:
-      - ./data/mariadb:/var/lib/mysql
+      - ./data/wordpress:/var/lib/mysql
     networks:
       - front
     env_file:
       - .env
     restart: always
+networks:
+  front:
+    driver: bridge
+# volumes:
+#   mariadb_data:
+#     driver: local
+#     driver_opts:
+#       device: /Users/hkahsay/data/mariadb
+#       type: volume
+#       o: bind
+#   wordpress_data:
+#     driver: local
+#     driver_opts:
+#       device: /Users/hkahsay/data/wordpress
+#       type: volume
+#       o: bind
 volumes:
   wordpress:
   mariadb:
-networks:
-  front:
+# networks:
+#   front:

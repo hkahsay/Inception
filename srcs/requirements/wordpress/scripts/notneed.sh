@@ -13,7 +13,8 @@ DOMAIN_NAME=hkahsay.42.fr
 DB_ROOT_PASSWORD=root
 DB_PASSWORD=password
 DB_USER=hkahsay
-DB_DATABASE=wordpressdb
+DB_NAME=wordpressdb
+DB_HOST=localhost
 
 # 3/ For wordpress auto-install and auto-configuration -------------------
 WP_WEBSITE_TITLE="Inception docker from crash"
@@ -23,7 +24,7 @@ WP_WEBSITE_URL="http://localhost"
 WP_WEBSITE_URL_WITHOUT_HTTP=localhost
 
 # Website admin identification. Specify a strong password
-WP_ADMIN_USER="wordpress"
+WP_ADMIN_USER="hkahsay"
 WP_ADMIN_PASSWORD="wordpress"
 WP_ADMIN_EMAIL="hkahsay@student.42lausanne.ch"
 
@@ -42,12 +43,12 @@ WP_DATA_DIR=./wordpress
 
 # 7/ Healthcheck availability of host services (mysql and woordpress server)
 # Waiting time in second
-WAIT_BEFORE_HOSTS=5
-WAIT_AFTER_HOSTS=5
-WAIT_HOSTS_TIMEOUT=300
-WAIT_SLEEP_INTERVAL=60
-WAIT_HOST_CONNECT_TIMEOUT=5
+# WAIT_BEFORE_HOSTS=5
+# WAIT_AFTER_HOSTS=5
+# WAIT_HOSTS_TIMEOUT=300
+# WAIT_SLEEP_INTERVAL=60
+# WAIT_HOST_CONNECT_TIMEOUT=5
 
 # 8/ Used only in online deployement --------------------------------------
-WORDPRESS_WEBSITE_URL_WITHOUT_WWW=example.com
-PHPMYADMIN_WEBSITE_URL_WITHOUT_HTTP=sql.example.com
+# WORDPRESS_WEBSITE_URL_WITHOUT_WWW=example.com
+# PHPMYADMIN_WEBSITE_URL_WITHOUT_HTTP=sql.example.com

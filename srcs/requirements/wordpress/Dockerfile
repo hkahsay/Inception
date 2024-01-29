@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt update -y && apt upgrade -y
-RUN apt-get -y install wget
+RUN apt-get -y install wget unzip
 
 # Using 7.4 because it seems to be the latest one supported by debian bullseye.
 # Suboptimal: 7.4 is already EOL (End Of Life): https://www.php.net/supported-versions.php.
@@ -18,7 +18,7 @@ php7.4-intl \
 php7.4-zip \
 mariadb-client
 
-COPY ./conf/wp.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY ./conf/wp.conf /etc/php/7.4/fpm/pool.d/www.conf
 
 # RUN wget https://fr.wordpress.org/wordpress-6.0-fr_FR.tar.gz -P /var/www
 # RUN cd /var/www && tar -xzf wordpress-6.0-fr_FR.tar.gz && rm wordpress-6.0-fr_FR.tar.gz
@@ -29,7 +29,7 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 RUN chmod +x wp-cli.phar
 RUN mv wp-cli.phar /usr/local/bin/wp
 
-COPY scripts/docker-entrypoint-new.sh /scripts/entrypoints.sh
+COPY scripts/docker-entrypoint.sh /scripts/entrypoints.sh
 RUN chmod +x /scripts/entrypoints.sh
 
 WORKDIR /var/www/wordpress

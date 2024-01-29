@@ -13,7 +13,7 @@ DB_ROOT_PASSWORD=password
 DB_USER=user
 DB_ROOT=root
 DB_PASSWORD=password
-DB_DATABASE=inception
+DB_NAME=wordpressdb
 DB_HOST=mariadb
 
 DB_NAME=password
