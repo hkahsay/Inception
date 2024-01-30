@@ -55,25 +55,40 @@
 * [.env](https://www.datanovia.com/en/lessons/wordpress-docker-setup-files-example-for-local-development/)
 
 
-docker stop $(docker ps -qa); docker rm $(docker ps -qa); docker rmi -f $(docker images -qa); docker volume rm $(docker volume ls -q); docker network rm $(docker network ls -q) 2> /dev/null
+docker stop $(docker ps -qa); docker rm $(docker ps -qa); 
+
+docker rmi -f $(docker images -qa); 
+
+docker volume rm $(docker volume ls -q);
+
+docker network rm $(docker network ls -q) 2> /dev/null
 
 to start mariadb
+
 **mysql -u root -p**
+
 **SHOW TABLES FROM <DB_NAME>;**
+
 **USE <DB_NAME>;**(to connecte to the correct database.)
+
 **SHOW DATABASES;**
+
 **SHOW GRANTS;**(Verify that the user you are using to connect to the database has the necessary permissions to view tables in the wordpressdb database.)
+
 **SHOW TABLES;**(to see you your database tables created)
 
 ##to start and check mariadb
+
 docker exec -it mariadb service mysql start
 
 docker exec -it mariadb service mysqld status
 
-ervice name might be different inside your MariaDB container. To check the status and start the service,
+service name might be different inside your MariaDB container. To check the status and start the service,
 
 docker exec -it mariadb ps aux | grep mysqld
 
 to mount volume
-docker volume create mariadb_data
-docker volume create wordpress_data
+
+docker volume create <volume_name>
+
+docker volume create <volume_name>
