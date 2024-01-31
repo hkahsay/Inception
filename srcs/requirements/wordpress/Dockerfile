@@ -45,5 +45,5 @@ RUN mkdir /run/php \
     && chmod 755 /run/php \
     && chown wordpress_user:wordpress_user /run/php
 
-
+EXPOSE 9000
 CMD ["sh", "/scripts/entrypoints.sh"]
