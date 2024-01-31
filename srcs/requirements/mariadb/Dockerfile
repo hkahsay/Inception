@@ -4,7 +4,7 @@ FROM debian:bullseye
 RUN apt-get update -y && \
     apt upgrade -y && \
     apt-get install mariadb-server mariadb-client -y  
-RUN sudo openssl
+
 
 COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
