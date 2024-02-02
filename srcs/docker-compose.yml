@@ -11,7 +11,7 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./data/wordpress:/var/www/wordpress
+      - wordpress_data:/var/www/wordpress
     networks:
       - front
     env_file:
@@ -27,8 +27,8 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - ./data/wordpress:/var/www/wordpress
-      - ./data/mariadb:/var/lib/mysql
+      - wordpress_data:/var/www/wordpress
+      - mariadb_data:/var/lib/mysql
       # - wordpress:/var/www/wordpress
     networks:
       - front
@@ -43,14 +43,28 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./data/mariadb:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
     networks:
       - front
     env_file:
       - .env
     restart: always
+# volumes:
+#   wordpress:
+#   mariadb:
 volumes:
-  wordpress:
-  mariadb:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${HOME}/data/wordpress'
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${HOME}/data/mariadb'
 networks:
   front:
+    driver: bridge
