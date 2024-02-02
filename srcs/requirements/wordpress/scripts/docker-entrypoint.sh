@@ -6,6 +6,7 @@
 
 set -x
 
+# TODO: wait until the database is ready with a loop
 sleep 10
 
 # Check which version of wp-cli is installed and can run
@@ -25,7 +26,7 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
     wp config create \
         --dbname=$DB_NAME \
         --dbuser=$DB_USER \
-        --prompt=$DB_PASSWORD \
+        --dbpass=$DB_PASSWORD \
         --dbhost=$DB_HOST \
         --path='/var/www/wordpress' \
         --extra-php \
@@ -33,8 +34,9 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 
     # Success: Generated 'wp-config.php' file.
 
+    # No need to do it, already created in the mariadb container
     # To create the database based on the information we passed to the wp-config.php
-    wp db create --allow-root
+    #wp db create --allow-root
     # Success: Database created.
 
     # cp wp-config.php wp-config.php
@@ -59,10 +61,9 @@ else
     printf "WordPress installed\n"
 fi
 
-if [ ! -d /run/php ]; then
-    mkdir -p /run/php
-fi
-/usr/sbin/php-fpm7.3 -F
+#if [ ! -d /run/php ]; then
+#    mkdir -p /run/php
+#fi
 
 # 2. Start php-fpm
-# php-fpm7.4 -F
+php-fpm7.4 -F
