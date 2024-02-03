@@ -12,9 +12,11 @@ sleep 10
 # Check which version of wp-cli is installed and can run
 wp cli version --allow-root
 
+ls -l /var/www/wordpress/wp-config.php
+echo hello
+# Checks if wp-config.php exists
 # Checks if wp-config.php exists
 if [ ! -f /var/www/wordpress/wp-config.php ]; then
-    # rm -rf /var/www/wordpress/*
     echo "Downloading and Installing WordPress..."
     
     # Download WordPress
@@ -27,30 +29,23 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
         --dbname=$DB_NAME \
         --dbuser=$DB_USER \
         --dbpass=$DB_PASSWORD \
-        --dbhost=$DB_HOST \
+        --dbhost=$DB_HOST:3306 \
         --path='/var/www/wordpress' \
         --extra-php \
         --allow-root
 
     # Success: Generated 'wp-config.php' file.
-
-    # No need to do it, already created in the mariadb container
-    # To create the database based on the information we passed to the wp-config.php
-    #wp db create --allow-root
-    # Success: Database created.
-
-    # cp wp-config.php wp-config.php
     chmod 777 wp-config.php
 
     # Install WordPress now
-    wp core install --url=wpclidemo.dev \
-        --title=$WP_WEBSITE_TITLE \
-        --admin_user=$WP_ADMIN_USER \
-        --admin_password=$WP_ADMIN_PASSWORD \
-        --admin_email=$WP_ADMIN_EMAIL \
-        --allow-root
-
-    # Success: WordPress installed successfully.
+    wp core install \
+        --url=$DOMAIN_NAME \
+        --title="$WP_WEBSITE_TITLE" \
+        --admin_user="$WP_ADMIN_USER" \
+        --admin_password="$WP_ADMIN_PASSWORD" \
+        --admin_email="$WP_ADMIN_EMAIL" \
+        --allow-root \
+        --path='/var/www/wordpress' > /install_output.txt 2>&1
 
     wp user create \
         --allow-root \
@@ -60,6 +55,7 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 else
     printf "WordPress installed\n"
 fi
+
 
 #if [ ! -d /run/php ]; then
 #    mkdir -p /run/php
