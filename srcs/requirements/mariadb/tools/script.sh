@@ -5,9 +5,11 @@ set -x
 if [ ! -d "/var/lib/mysql/mysql" ]; then
 
 # --user refers to Unix user used to run mysql
-# Command documentation: https://dev.mysql.com/doc/refman/5.7/en/mysql-install-db.html#option_mysql_install_db_user
+# Command documentation: https://dev.mysql.com/doc/refman/5.7/en/mysql-install-db.html#option_mysql_install_MYSQL_USER
 mysql_install_db --user=mysql --ldata=/var/lib/mysql
+fi
 
+if [ ! -f /home/hkahsay/data/wordpress/wp-config.php ]; then
 # Start mariadb
 # --user refers to Unix user used to run mysql
 # Command documentation: https://dev.mysql.com/doc/refman/8.0/en/mysqld-safe.html#option_mysqld_safe_user
@@ -21,11 +23,8 @@ done
 
 # Check if the database already exists
 # Command documentation: https://dev.mysql.com/doc/refman/8.0/en/mysql-command-options.html
-DB_EXISTS=$(mysql --user root -e "SHOW DATABASES LIKE '${DB_NAME}';" | grep "${DB_NAME}")
 
-if [ -z "$DB_EXISTS" ]; then
-    # If the database does not exist, create it
-    mysql --user root <<- EOF
+mysql --user root <<- EOF
     SET PASSWORD FOR 'root'@'localhost' = PASSWORD('${DB_ROOT_PASSWORD}');
     GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}' WITH GRANT OPTION;
     DELETE FROM mysql.user WHERE user != 'root' AND user != 'mariadb.sys' OR (user = 'root' AND host != 'localhost');
@@ -34,9 +33,7 @@ if [ -z "$DB_EXISTS" ]; then
     GRANT ALL PRIVILEGES ON ${DB_NAME}.* TO '${DB_USER}'@'%';
     FLUSH PRIVILEGES;
 EOF
-else
-    echo "Database '${DB_NAME}' already exists."
-fi
+
 
 mysqladmin --user=root --password=${DB_ROOT_PASSWORD} shutdown
 
@@ -44,4 +41,4 @@ fi
 
 # Start MariaDB using mysqld_safe in the background
 # --user refers to Unix user used to run mysql
-mysqld_safe --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0 
+mysqld_safe --datadir=/var/lib/mysql --user=mysql --bind-address=0.0.0.0

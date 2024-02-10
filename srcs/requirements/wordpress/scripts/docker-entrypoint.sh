@@ -12,11 +12,10 @@ sleep 10
 # Check which version of wp-cli is installed and can run
 wp cli version --allow-root
 
-ls -l /var/www/wordpress/wp-config.php
-echo hello
 # Checks if wp-config.php exists
 # Checks if wp-config.php exists
-if [ ! -f /var/www/wordpress/wp-config.php ]; then
+if [ ! -f /wordpress/wp-config.php ]; then
+    rm -rf /var/www/wordpress/*
     echo "Downloading and Installing WordPress..."
     
     # Download WordPress
@@ -45,7 +44,8 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
         --admin_password="$WP_ADMIN_PASSWORD" \
         --admin_email="$WP_ADMIN_EMAIL" \
         --allow-root \
-        --path='/var/www/wordpress' > /install_output.txt 2>&1
+        --path='/var/www/wordpress'
+        # > /install_output.txt 2>&1
 
     wp user create \
         --allow-root \
@@ -55,11 +55,6 @@ if [ ! -f /var/www/wordpress/wp-config.php ]; then
 else
     printf "WordPress installed\n"
 fi
-
-
-#if [ ! -d /run/php ]; then
-#    mkdir -p /run/php
-#fi
 
 # 2. Start php-fpm
 php-fpm7.4 -F

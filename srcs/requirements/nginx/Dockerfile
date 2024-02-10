@@ -16,7 +16,7 @@ RUN openssl req -x509 -nodes -newkey rsa:2048 \
 -subj "/C=CH/ST=VD/L=Lausanne/O=42/OU=42/CN=${DOMAIN_NAME}/UID=${DB_USER}"
 
 # Expose the HTTPS port
-# EXPOSE 443
+EXPOSE 443
 
 # Run as non-root?
 # See https://www.geeksforgeeks.org/how-to-run-nginx-for-root-non-root/

@@ -1,5 +1,5 @@
 .env
 .DS_Store
 ignore
-env.f
 .vscode
+note.pdf

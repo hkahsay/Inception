@@ -1,7 +1,7 @@
 
 all:
-		# sudo mkdir -p $(HOME)/data/wordpress
-		# sudo mkdir -p $(HOME)/data/mariadb
+		sudo mkdir -p $(HOME)/data/wordpress
+		sudo mkdir -p $(HOME)/data/mariadb
 		docker compose -f srcs/docker-compose.yml up --detach --build
 
 # create-dirs:
@@ -22,8 +22,8 @@ clean:	down
 		docker system prune -af
 
 fclean: clean
-		rm -rf /Users/hkahsay/data/mariadb/*
-		rm -rf /Users/hkahsay/data/wordpress/*
+		sudo rm -rf $(HOME)/data
+		# rm -rf /Users/hkahsay/data/wordpress
 
 		# docker stop $$(docker ps -qa); docker rm $$(docker ps -qa); docker rmi -f $$(docker images -qa); docker volume rm $$(docker volume ls -q); docker network rm $$(docker network ls -q) 2>/dev/null
 		# docker system prune -f

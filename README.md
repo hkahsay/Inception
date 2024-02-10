@@ -61,9 +61,9 @@ to start mariadb
 
 **mysql -u root -p**
 
-**SHOW TABLES FROM <DB_NAME>;**
+**SHOW TABLES FROM <MYSQL_NAME>;**
 
-**USE <DB_NAME>;**(to connecte to the correct database.)
+**USE <MYSQL_NAME>;**(to connecte to the correct database.)
 
 **SHOW DATABASES;**
 
@@ -87,3 +87,9 @@ docker volume create <volume_name>
 
 docker volume create <volume_name>
 prune 
+
+connect ssh of local machine win Virtualmachine using .ssh
+ ssh -p 4242 username@localhost
+ 
+ [installation on VM](https://baigal.medium.com/born2beroot-e6e26dfb50ac)
+

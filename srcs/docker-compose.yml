@@ -29,7 +29,6 @@ services:
     volumes:
       - wordpress_data:/var/www/wordpress
       - mariadb_data:/var/lib/mysql
-      # - wordpress:/var/www/wordpress
     networks:
       - front
     env_file:
@@ -49,9 +48,6 @@ services:
     env_file:
       - .env
     restart: always
-# volumes:
-#   wordpress:
-#   mariadb:
 volumes:
   wordpress_data:
     driver: local
